@@ -8,8 +8,8 @@ library("fontawesome")
 library("shinydashboard")
 library("shinycssloaders")
 library("igraph")
-library("markdown")
 library("rmarkdown")
+library("markdown")
 library("ggplot2")
 library("visNetwork")
 library("heatmaply")
@@ -803,161 +803,6 @@ colnames(counts_148_selected_without_doubles) <- c("Resection","Ablation","Cryoi
 
 
 
-#########################
-#       Define UI       #
-#########################
-
-ui <- secure_app(head_auth = tags$script(inactivity),
-                 dashboardPage(skin = "purple",
-                               dashboardHeader(title = "Heart Injuries"),
-                               dashboardSidebar(width = 300,
-                                                sidebarMenu(
-                                                  menuItem("Home",tabName = "home",icon = icon("home")),
-                                                  menuItem("Resection vs Sham",tabName = "resected", icon = icon("scissors",lib = "glyphicon")),#,icon = icon("calendar",lib = "glyphicon")),
-                                                  menuItem("Ablation vs Sham",tabName = "ablated",icon = icon("tag",lib = "glyphicon")),
-                                                  menuItem("Uninjured vs Sham",tabName = "uninjured",icon = icon("ok",lib = "glyphicon")),
-                                                  menuItem("Heart Core Regeneration Common Genes ",tabName = "heartcore",icon = icon("heart-empty",lib = "glyphicon")),
-                                                  menuItem("PubMed Query",tabName = "kuk",icon = icon("list",lib = "glyphicon")),
-                                                  menuItem("Core Regeneration Log2FC",tabName = "core_l2fc",icon = icon("bookmark",lib = "glyphicon")),
-                                                  menuItem("Genes Seeker",tabName = "gs",icon = icon("search",lib = "glyphicon")),
-                                                  menuItem("About",tabName = "about",icon = icon("thumbtack"))
-                                                )),
-                               dashboardBody(
-                                 tabItems(
-                                   tabItem(tabName = "home",
-                                           #home section and markdown
-                                           includeMarkdown("./www/markdown_home.md")),
-                                   # #next tab
-                                   
-                                   #https://stackoverflow.com/questions/70689513/how-to-have-shiny-dashboard-box-fill-the-entire-width-of-my-dashbaord
-                                   #next tab
-                                   tabItem(tabName = "resected",
-                                           fluidRow(
-                                             column(width = 12, textOutput("verb_amp")),#tags$head(tags$style("#text1{color: red;font-size: 20px;font-style: italic;}")) %>% withSpinner()),
-                                             column(width = 12, visNetworkOutput(outputId = "resected_net",width = "auto", height = "600px") %>% withSpinner()),
-                                             column(width = 12, dataTableOutput(outputId = "goTable_amp") %>% withSpinner()),
-                                             column(width = 12,valueBoxOutput(width = "100%",outputId = "genes_go_amp") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "amphm",width = "100%",height = "100%") %>% withSpinner())
-                                             
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "ablated",
-                                           fluidRow(
-                                             column(width = 12, textOutput("verb_abl")),#tags$head(tags$style("#text1{color: red;font-size: 20px;font-style: italic;}")) %>% withSpinner()),
-                                             column(width = 12, visNetworkOutput(outputId = "ablated_net",width = "auto",height = "600px") %>% withSpinner()),
-                                             column(width = 12, dataTableOutput(outputId = "goTable_abl") %>% withSpinner()),
-                                             column(width = 12,valueBoxOutput(width = 12,outputId = "genes_go_abl") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "ablhm",width = "100%",height = "100%") %>% withSpinner())
-                                             
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "uninjured",
-                                           fluidRow(
-                                             column(width = 12, textOutput("verb_unj")),#tags$head(tags$style("#text1{color: red;font-size: 20px;font-style: italic;}")) %>% withSpinner()),
-                                             column(width = 12, visNetworkOutput(outputId = "uninjured_net",width = "auto",height = "600px") %>% withSpinner()),
-                                             column(width = 12, dataTableOutput(outputId = "goTable_unj") %>% withSpinner()),
-                                             column(width = 12,valueBoxOutput(width = 12,outputId = "genes_go_unj") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "unjhm",width = "100%",height = "100%") %>% withSpinner())
-                                             
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "heartcore",
-                                           fluidRow(
-                                             column(width = 12, textOutput("verb_core") %>% withSpinner()),
-                                             column(width = 12, visNetworkOutput(outputId = "heartcore_net",width = "auto",height = "600px") %>% withSpinner()),
-                                             column(width = 12, dataTableOutput(outputId = "goTable_core") %>% withSpinner()),
-                                             column(width = 12,valueBoxOutput(width = "auto",outputId = "genes_go_core") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "hchm",width = "100%",height = "100%") %>% withSpinner())
-                                             
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "kuk",
-                                           fluidRow(
-                                             column(width = 12,plotlyOutput(outputId = "known", width = "100%", height = "1024px") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "unknown", width = "100%", height = "1024px") %>% withSpinner())         
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "core_l2fc",
-                                           fluidRow(
-                                             column(width = 12,plotlyOutput(outputId = "core_l2fc_hm", width = "100%", height = "2048px") %>% withSpinner())         
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "gs",
-                                           fluidRow(
-                                             column(width=4,selectizeInput(inputId = "gene",
-                                                                           choices = NULL,
-                                                                           label = "Select at least 2 Gene Symbol",
-                                                                           #choices = c(as.character(sort(unique(gene_seeker_table$MGI_Symbol)))),
-                                                                           selected = c("Foxm1"),
-                                                                           multiple = TRUE)),
-                                             column(width = 12, dataTableOutput(outputId = "geneseeker_table") %>% withSpinner()),
-                                             column(width = 12,plotlyOutput(outputId = "geneseeker_plot",width = "100%",height = "100%") %>% withSpinner()),
-                                           )
-                                   ),
-                                   #next tab
-                                   tabItem(tabName = "about",
-                                           h2("Created and scratched by: "),
-                                           
-                                           fluidRow(
-                                             
-                                             fluidRow(
-                                               column(width = 8,
-                                                      h3(tags$a("Marius Botos",
-                                                                href = "https://sporgelum.github.io/")),
-                                                      imageOutput("marius")
-                                               ),
-                                               column(width = 4,imageOutput("img7")),
-                                               style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px')
-                                           ),
-                                           
-                                           fluidRow(
-                                             column(width = 8,
-                                                    h3(tags$a("Prateek Arora",
-                                                              href = "https://www.anatomie.unibe.ch/ueber_uns/team/detail/index_ger.php?id=578")),
-                                                    imageOutput("prateek"),
-                                                    style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px'),
-                                             column(width = 4,imageOutput("pa1"))),
-                                           
-                                           fluidRow(
-                                             column(width = 8,
-                                                    h3(tags$a("Panagiotis Chouvardas",
-                                                              href = "https://www.urogenus-research.org/team/chouvardas-panagiotis")),
-                                                    imageOutput("panos"),
-                                                    style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px'),
-                                             column(width = 2,imageOutput("pc1")),
-                                             column(width = 2,imageOutput("pc2"))),
-                                           
-                                           fluidRow(
-                                             column(width = 8,
-                                                    h3(tags$a("Nadia Mercarder",
-                                                              href = "https://www.anatomie.unibe.ch/about_us/management/detail/index_eng.php?id=449")),
-                                                    imageOutput("nadia"),
-                                                    style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px'),
-                                             column(width = 2,imageOutput("nd1")),
-                                             column(width = 2,imageOutput("nd2"))
-                                             
-                                           )
-                                   )
-                                 )# end tabItems
-                                 # Add download button 
-                               )# end dashboardBody
-                 )# end dashboardPage
-)#end all
-
-myCol <- c("#CC79A7","#0072B2","#E69F00","#999999")
-myCol_3 <- c("#CC79A7","#0072B2","#009E73","#999999")
-
-
-#########################
-#       Define Server   #
-#########################
-
 server <- function(input, output, session) {
   
   result_auth <- secure_server(check_credentials = check_credentials(credentials))
@@ -1725,4 +1570,3 @@ server <- function(input, output, session) {
   
   
 }
-shinyApp(ui = ui, server = server)
