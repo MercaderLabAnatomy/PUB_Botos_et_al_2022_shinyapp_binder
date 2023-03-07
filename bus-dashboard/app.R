@@ -1,6 +1,6 @@
+library("rlang")
 library("sodium")
 library("devtools")
-library("rlang")
 library("shinymanager")
 library("DT")
 library("dplyr")
