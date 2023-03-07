@@ -1,25 +1,19 @@
 library("sodium")
-library("shinymanager")
-
 library("devtools")
-
-#library("shiny")
+library("shinymanager")
 library("DT")
-#library("leaflet")
+library("dplyr")
 library("fontawesome")
 library("shinydashboard")
 library("shinycssloaders")
 library("igraph")
-library("markdown")
 library("rmarkdown")
-library("dplyr")
 library("ggplot2")
 library("visNetwork")
 library("heatmaply")
 library("plotly")
 library("brew")
 library("RColorBrewer")
-#library("biomaRt")
 library("curl")
 library("wesanderson")
 library("shinyauthr")
@@ -804,34 +798,6 @@ counts_148_selected_without_doubles <- cbind.data.frame(counts_148_selected_with
 rownames(counts_148_selected_without_doubles) <- amp_df_2$MGI_Symbol
 colnames(counts_148_selected_without_doubles) <- c("Resection","Ablation","Cryoinjury")
 
-#add description of these genes
-
-#biomaRt::listEnsembl()
-# #Use ensembl
-# ensembl <- useEnsembl("ENSEMBL_MART_ENSEMBL")
-# #biomaRt::listAttributes(ensembl)
-# #biomaRt::listDatasets(ensembl)
-# 
-# #dre = useEnsembl(biomart = "ensembl", dataset = "drerio_gene_ensembl", host = "https://dec2021.archive.ensembl.org/")#mirror = "useast") # query organism (from this organism)
-# mmus = useEnsembl(biomart = "ensembl", dataset = "mmusculus_gene_ensembl", host = "https://dec2021.archive.ensembl.org/")#mirror = "useast") # target organism (convert genes to this organism)
-# 
-# #danio_ensembl_id_attributes <-c("ensembl_gene_id", "mmusculus_homolog_perc_id")#,# attributes to query from danio database (query organism) 
-# #"mmusculus_homolog_goc_score") #orthology score to mouse from danio side
-# 
-# #danio_zfin_id_attributes <-c("ensembl_gene_id", "entrezgene_id", "zfin_id_symbol","description") # attributes to convert ensembl id to zfin id 
-# 
-# 
-# mmus_attributes <- c("mgi_symbol", "description") # attributes that you want from mouse database
-# 
-# #make a converted dataframe with ensemble ids and mouse orthology scores 
-
-#make dataframe for dre ensembl id and zfin
-# m <- cryo_df_2$MGI_Symbol
-# dim(m)
-# genes_148__desc_mmus = getBM(attributes = mmus_attributes,
-#                                          filters = "mgi_symbol",
-#                                          values = m,
-#                                          mart = mmus)
 
 
 
@@ -860,7 +826,7 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                            #home section and markdown
                                            includeMarkdown("./www/markdown_home.md")),
                                    # #next tab
-
+                                   
                                    #https://stackoverflow.com/questions/70689513/how-to-have-shiny-dashboard-box-fill-the-entire-width-of-my-dashbaord
                                    #next tab
                                    tabItem(tabName = "resected",
@@ -870,7 +836,7 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                              column(width = 12, dataTableOutput(outputId = "goTable_amp") %>% withSpinner()),
                                              column(width = 12,valueBoxOutput(width = "100%",outputId = "genes_go_amp") %>% withSpinner()),
                                              column(width = 12,plotlyOutput(outputId = "amphm",width = "100%",height = "100%") %>% withSpinner())
-
+                                             
                                            )
                                    ),
                                    #next tab
@@ -930,24 +896,24 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                                                            multiple = TRUE)),
                                              column(width = 12, dataTableOutput(outputId = "geneseeker_table") %>% withSpinner()),
                                              column(width = 12,plotlyOutput(outputId = "geneseeker_plot",width = "100%",height = "100%") %>% withSpinner()),
-                                            )
+                                           )
                                    ),
                                    #next tab
                                    tabItem(tabName = "about",
                                            h2("Created and scratched by: "),
                                            
                                            fluidRow(
-
-                                            fluidRow(
-                                             column(width = 8,
-                                                    h3(tags$a("Marius Botos",
-                                                               href = "https://sporgelum.github.io/")),
-                                                    imageOutput("marius")
-                                                    ),
-                                             column(width = 4,imageOutput("img7")),
-                                             style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px')
-                                             ),
                                              
+                                             fluidRow(
+                                               column(width = 8,
+                                                      h3(tags$a("Marius Botos",
+                                                                href = "https://sporgelum.github.io/")),
+                                                      imageOutput("marius")
+                                               ),
+                                               column(width = 4,imageOutput("img7")),
+                                               style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px')
+                                           ),
+                                           
                                            fluidRow(
                                              column(width = 8,
                                                     h3(tags$a("Prateek Arora",
@@ -955,7 +921,7 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                                     imageOutput("prateek"),
                                                     style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px'),
                                              column(width = 4,imageOutput("pa1"))),
-                                             
+                                           
                                            fluidRow(
                                              column(width = 8,
                                                     h3(tags$a("Panagiotis Chouvardas",
@@ -964,7 +930,7 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                                     style='padding-left:20px; padding-right:0px; padding-top:0px; padding-bottom:25px'),
                                              column(width = 2,imageOutput("pc1")),
                                              column(width = 2,imageOutput("pc2"))),
-
+                                           
                                            fluidRow(
                                              column(width = 8,
                                                     h3(tags$a("Nadia Mercarder",
@@ -974,8 +940,8 @@ ui <- secure_app(head_auth = tags$script(inactivity),
                                              column(width = 2,imageOutput("nd1")),
                                              column(width = 2,imageOutput("nd2"))
                                              
-                                               )
                                            )
+                                   )
                                  )# end tabItems
                                  # Add download button 
                                )# end dashboardBody
@@ -993,12 +959,12 @@ myCol_3 <- c("#CC79A7","#0072B2","#009E73","#999999")
 server <- function(input, output, session) {
   
   result_auth <- secure_server(check_credentials = check_credentials(credentials))
-
+  
   output$res_auth <- renderPrint({
     reactiveValuesToList(result_auth)
-
+    
   })
-
+  
   output$resected_net = renderVisNetwork({
     visNetwork::visIgraph(amp) |>
       visNodes(color = "#CC6699") |>
@@ -1009,12 +975,12 @@ server <- function(input, output, session) {
   })
   
   output$goTable_amp <- renderDataTable({
-
+    
     enrich_go_bo_df %>%
       group_by(Group) %>%
       filter(Group == "Resection") %>%
       filter(ID %in% vertex_attr(amp)$name[vertex_attr(amp)$name == input$current_node_id])
-
+    
     
     
     
@@ -1034,9 +1000,9 @@ server <- function(input, output, session) {
       value = tags$p(enrich_go_bo_df %>% group_by(Group) %>% filter(Group == "Resection") %>% filter(ID %in% vertex_attr(amp)$name[vertex_attr(amp)$name == input$current_node_id]) %>% pull(geneID) %>% gsub(pattern = "/",replacement=","),style = "font-size: 35%;", style ="color : black"),
       color="fuchsia",
       subtitle = paste0("Genes Involved in the ",vertex_attr(amp)$`EnrichmentMap::GS_DESCR`[vertex_attr(amp)$name == input$current_node_id]))
-    )
+  )
   
-
+  
   genes_amp <-  "Select_a_node"
   # print(genes_amp)
   amp_counts2 <- as.data.frame(amp_counts[,c(rownames(s4c %>% filter(Condition %in% c("Resection","Sham"))),"Symbols")])
@@ -1060,10 +1026,10 @@ server <- function(input, output, session) {
   
   output$amphm <- renderPlotly({
     heatmaply::heatmaply(x = amp_mat |> dplyr::select(cols_amp$ID[order(cols_amp$Condition,decreasing = TRUE)]),
-
+                         
                          Rowv = FALSE,
                          Colv = FALSE,
-
+                         
                          trace="none")
     #heatmap_layers = theme(axis.line=element_blank()))genes_amp <-  "nothing"
     print(genes_amp)
@@ -1088,63 +1054,63 @@ server <- function(input, output, session) {
     
     output$amphm <- renderPlotly({
       heatmaply::heatmaply(x = amp_mat |> dplyr::select(cols_amp$ID[order(cols_amp$Condition,decreasing = TRUE)]),
-
+                           
                            Rowv = FALSE,
                            Colv = FALSE,
-
+                           
                            trace="none")
       
     }) 
   }) 
- 
+  
   
   observeEvent(input$current_node_id, {
-
-      genes_amp <- enrich_go_bo_df %>% group_by(Group) %>% filter(Group == "Resection") %>%
-        filter(ID %in% vertex_attr(amp)$name[vertex_attr(amp)$name == input$current_node_id]) %>%
-        pull(geneID) %>% gsub(pattern = "/",replacement=",")  %>% strsplit(split = ",") %>% unlist()
-      # print(paste(length(genes_amp), "something selected"))
-      amp_counts2 <- as.data.frame(amp_counts[,c(rownames(s4c %>% filter(Condition %in% c("Resection","Sham"))),"Symbols")])
-      
-      amp_counts_genes <- amp_counts2 %>% filter(Symbols %in% genes_amp) %>% distinct(Symbols,.keep_all = TRUE)
-      
-      amp_mat <- as.data.frame(amp_counts_genes[,-c(length(amp_counts_genes))])
-      rownames(amp_mat) <- amp_counts_genes$Symbols
-      # print(head(s4c))
-      # print(unique(s4c$Condition))
-      # 
-      cols_amp <- s4c |> dplyr::filter(rownames(s4c) %in% colnames(amp_mat))
-      # print(unique(cols_amp$Condition))
-      
-      cols_amp$ID <- row.names(cols_amp)
-      # print(unique(cols_amp$Condition))
-      cols_amp <- cols_amp[order(cols_amp$Condition,decreasing = TRUE),]
-      # print(unique(cols_amp$Condition))
-      
-      my_palette <- colorRampPalette(brewer.pal(3, "YlOrRd"))(256)
-      output$amphm <- renderPlotly({
-        heatmaply::heatmaply(x = amp_mat |> dplyr::select(cols_amp$ID[order(cols_amp$Condition,decreasing = TRUE)]),
-                             # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
-                             colors = my_palette,
-                             col_side_colors = tibble::tibble("<b>Column Names</b>"= cols_amp$Condition),
-                             col_side_palette = c("Sham" = "#999999",
-                                                  "Resection" = "magenta"),
-                             hide_colorbar = FALSE,
-                             showticklabels=TRUE,
-                             Rowv = TRUE,
-                             Colv = FALSE,
-                             plot_method = "plotly",
-                             scale = "none",
-                             key.title = "Expression by\nGene Values",
-                             subplot_widths=c(0.2, 0.03),
-                             subplot_heights=c(0.03, 0.96),
-                             hclust_method = "mcquitty",
-                             grid_color = "white",
-                             grid_width = 0.21)
-        #heatmap_layers = theme(axis.line=element_blank()))
-      }) 
-      
-
+    
+    genes_amp <- enrich_go_bo_df %>% group_by(Group) %>% filter(Group == "Resection") %>%
+      filter(ID %in% vertex_attr(amp)$name[vertex_attr(amp)$name == input$current_node_id]) %>%
+      pull(geneID) %>% gsub(pattern = "/",replacement=",")  %>% strsplit(split = ",") %>% unlist()
+    # print(paste(length(genes_amp), "something selected"))
+    amp_counts2 <- as.data.frame(amp_counts[,c(rownames(s4c %>% filter(Condition %in% c("Resection","Sham"))),"Symbols")])
+    
+    amp_counts_genes <- amp_counts2 %>% filter(Symbols %in% genes_amp) %>% distinct(Symbols,.keep_all = TRUE)
+    
+    amp_mat <- as.data.frame(amp_counts_genes[,-c(length(amp_counts_genes))])
+    rownames(amp_mat) <- amp_counts_genes$Symbols
+    # print(head(s4c))
+    # print(unique(s4c$Condition))
+    # 
+    cols_amp <- s4c |> dplyr::filter(rownames(s4c) %in% colnames(amp_mat))
+    # print(unique(cols_amp$Condition))
+    
+    cols_amp$ID <- row.names(cols_amp)
+    # print(unique(cols_amp$Condition))
+    cols_amp <- cols_amp[order(cols_amp$Condition,decreasing = TRUE),]
+    # print(unique(cols_amp$Condition))
+    
+    my_palette <- colorRampPalette(brewer.pal(3, "YlOrRd"))(256)
+    output$amphm <- renderPlotly({
+      heatmaply::heatmaply(x = amp_mat |> dplyr::select(cols_amp$ID[order(cols_amp$Condition,decreasing = TRUE)]),
+                           # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
+                           colors = my_palette,
+                           col_side_colors = tibble::tibble("<b>Column Names</b>"= cols_amp$Condition),
+                           col_side_palette = c("Sham" = "#999999",
+                                                "Resection" = "magenta"),
+                           hide_colorbar = FALSE,
+                           showticklabels=TRUE,
+                           Rowv = TRUE,
+                           Colv = FALSE,
+                           plot_method = "plotly",
+                           scale = "none",
+                           key.title = "Expression by\nGene Values",
+                           subplot_widths=c(0.2, 0.03),
+                           subplot_heights=c(0.03, 0.96),
+                           hclust_method = "mcquitty",
+                           grid_color = "white",
+                           grid_width = 0.21)
+      #heatmap_layers = theme(axis.line=element_blank()))
+    }) 
+    
+    
   })
   
   
@@ -1234,7 +1200,7 @@ server <- function(input, output, session) {
       
     }) 
   }) 
-
+  
   observeEvent(input$current_node_id, {
     genes_abl <- enrich_go_bo_df %>% group_by(Group) %>% filter(Group == "Ablated") %>% filter(ID %in% vertex_attr(abl)$name[vertex_attr(abl)$name == input$current_node_id]) %>% pull(geneID) %>% gsub(pattern = "/",replacement=",")  %>% strsplit(split = ",") %>% unlist()
     abl_counts2 <- as.data.frame(abl_counts[,c(rownames(s4c %>% filter(Condition %in% c("Ablated","Sham"))),"Symbols")])
@@ -1249,25 +1215,25 @@ server <- function(input, output, session) {
     
     output$ablhm <-   
       renderPlotly({
-      heatmaply::heatmaply(x = abl_mat |> dplyr::select(cols_abl$ID[order(cols_abl$Condition,decreasing = TRUE)]),
-                           # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
-                           colors = my_palette,
-                           col_side_colors = tibble::tibble("<b>Column Names</b>" = cols_abl$Condition),
-                           col_side_palette = c("Sham" = "#999999",
-                                                "Ablated"= "orange"),
-                           hide_colorbar = FALSE,
-                           showticklabels=TRUE,
-                           Rowv = TRUE,
-                           Colv = FALSE,
-                           plot_method = "plotly",
-                           scale = "none",
-                           key.title = "Expression by\nGene Values",
-                           subplot_widths=c(0.2, 0.03),
-                           subplot_heights=c(0.03, 0.965),
-                           hclust_method = "mcquitty",
-                           grid_color = "white",
-                           grid_width = 0.21)
-                           #heatmap_layers = theme(axis.line=element_blank()))
+        heatmaply::heatmaply(x = abl_mat |> dplyr::select(cols_abl$ID[order(cols_abl$Condition,decreasing = TRUE)]),
+                             # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
+                             colors = my_palette,
+                             col_side_colors = tibble::tibble("<b>Column Names</b>" = cols_abl$Condition),
+                             col_side_palette = c("Sham" = "#999999",
+                                                  "Ablated"= "orange"),
+                             hide_colorbar = FALSE,
+                             showticklabels=TRUE,
+                             Rowv = TRUE,
+                             Colv = FALSE,
+                             plot_method = "plotly",
+                             scale = "none",
+                             key.title = "Expression by\nGene Values",
+                             subplot_widths=c(0.2, 0.03),
+                             subplot_heights=c(0.03, 0.965),
+                             hclust_method = "mcquitty",
+                             grid_color = "white",
+                             grid_width = 0.21)
+        #heatmap_layers = theme(axis.line=element_blank()))
       })
   })
   
@@ -1358,7 +1324,7 @@ server <- function(input, output, session) {
       
     }) 
   }) 
-
+  
   observeEvent(input$current_node_id, {
     genes_unj <- enrich_go_bo_df %>% group_by(Group) %>% filter(Group == "Uninjured") %>% filter(ID %in% vertex_attr(unj)$name[vertex_attr(unj)$name == input$current_node_id]) %>% pull(geneID) %>% gsub(pattern = "/",replacement=",")  %>% strsplit(split = ",") %>% unlist()
     unj_counts2 <- as.data.frame(unj_counts[,c(rownames(s4c %>% filter(Condition %in% c("Uninjured","Sham"))),"Symbols")])
@@ -1370,7 +1336,7 @@ server <- function(input, output, session) {
     cols_unj <- s4c |> dplyr::filter(rownames(s4c) %in% colnames(unj_mat)) 
     cols_unj$ID <- row.names(cols_unj)
     cols_unj <- cols_unj[order(cols_unj$Condition,decreasing = FALSE),]
-      
+    
     output$unjhm <- renderPlotly({
       heatmaply::heatmaply(x = unj_mat |> dplyr::select(cols_unj$ID[order(cols_unj$Condition,decreasing = FALSE)]),
                            # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
@@ -1390,10 +1356,10 @@ server <- function(input, output, session) {
                            key.title = "Expression by\nGene Values",
                            grid_color = "white",
                            grid_width = 0.21)
-      })
+    })
   })
   
-
+  
   output$heartcore_net = renderVisNetwork({
     visNetwork::visIgraph(core) |>
       visNodes(color = "#DCD159") |>
@@ -1421,7 +1387,7 @@ server <- function(input, output, session) {
   
   output$genes_go_core <- renderValueBox(valueBox(value = tags$p(core_reg %>% group_by(ID) %>% filter(ID %in% vertex_attr(core)$name[vertex_attr(core)$name == input$current_node_id]) %>% pull(Genes),style = "font-size: 35%;", style ="color : black"), color="yellow", subtitle = paste0("Genes Involved in the ",vertex_attr(core)$`EnrichmentMap::GS_DESCR`[vertex_attr(core)$name == input$current_node_id])))
   
-
+  
   genes_core <-  "Select_a_node"
   print(genes_core)
   core_counts2 <- as.data.frame(core_counts[,c(rownames(s4c %>% filter(Condition %in% c("Sham","Cryoinjury","Ablated","Resection"))),"MGI_Symbol")])
@@ -1430,7 +1396,7 @@ server <- function(input, output, session) {
   
   core_mat <- as.data.frame(core_counts_genes[,-c(length(core_counts_genes))])
   rownames(core_mat) <- core_counts_genes$MGI_Symbol
-
+  
   # print(head(s4c))
   # print(unique(s4c$Condition))
   
@@ -1456,37 +1422,7 @@ server <- function(input, output, session) {
                          
                          trace="none")
   }) 
-    #heatmap_layers = theme(axis.line=element_blank()))genes_core <-  "nothing"
-    # # print(genes_core)
-    # core_counts2 <- as.data.frame(core_counts[,c(rownames(s4c %>% filter(Condition %in% c("Sham","Cryoinjury","Ablated","Resection"))),"MGI_Symbol")])
-    # 
-    # core_counts_genes <- core_counts2 %>% filter(MGI_Symbol %in% genes_core) %>% distinct(MGI_Symbol,.keep_all = TRUE)
-    # 
-    # core_mat <- as.data.frame(core_counts_genes[,-c(length(core_counts_genes))])
-    # rownames(core_mat) <- core_counts_genes$MGI_Symbol
-    # # print(head(s4c))
-    # # print(unique(s4c$Condition))
-    # 
-    # cols_core <- s4c |> dplyr::filter(rownames(s4c) %in% colnames(core_mat))
-    # # print(unique(cols_core$Condition))
-    # 
-    # cols_core$ID <- row.names(cols_core)
-    # # print(unique(cols_core$Condition))
-    # cols_core <- cols_core[order(cols_core$Condition,decreasing = TRUE),]
-    # # print(unique(cols_core$Condition))
-    # if(nrow(core_mat)<=2){cluster=TRUE}else {cluster=FALSE}
-    # my_palette <- colorRampPalette(brewer.pal(3, "YlOrRd"))(256)
-    # 
-    # output$corehm <- renderPlotly({
-    #   heatmaply::heatmaply(x = core_mat |> dplyr::select(cols_core$ID[order(cols_core$Condition,decreasing = TRUE)]),
-    #                        
-    #                        Rowv = FALSE,
-    #                        Colv = FALSE,
-    #                        
-    #                        trace="none")
-    #   
-    # }) 
- 
+  
   
   #"GO:0071621"
   observeEvent(input$current_node_id, {
@@ -1504,7 +1440,7 @@ server <- function(input, output, session) {
     cols_core <- s4c |> dplyr::filter(rownames(s4c) %in% colnames(core_mat)) 
     cols_core$ID <- row.names(cols_core)
     cols_core <- cols_core[order(cols_core$Condition,decreasing = TRUE),]
- 
+    
     output$hchm <- renderPlotly({
       # heatmaply::heatmaply(x= core_mat[cols_core$ID[order(cols_core$Condition,decreasing = TRUE)]],
       heatmaply::heatmaply(x= core_mat |> dplyr::select(cols_core$ID[order(cols_core$Condition,decreasing = TRUE)]),
@@ -1527,11 +1463,11 @@ server <- function(input, output, session) {
                            key.title = "Expression by\nGene Values",
                            grid_color = "white",
                            grid_width = 0.21)#heatmap_layers = theme(axis.line=element_blank()))
-      })
+    })
     
-   })
+  })
   
- #Create Gene symbol list to select and display
+  #Create Gene symbol list to select and display
   list_input_data_inputize <- gene_seeker_table |> group_by(MGI_Symbol) |> pull(MGI_Symbol)
   list_input_data_inputize <- list(list_input_data_inputize)
   updateSelectizeInput(session, 'gene', choices = list_input_data_inputize, server = TRUE)
@@ -1546,10 +1482,10 @@ server <- function(input, output, session) {
       #gene_seeker_table |> dplyr::group_by(MGI_Symbol) |> filter(MGI_Symbol %in% "Foxm1") filter(MGI_Symbol %in% input$gene) |> distinct(.keep_all = TRUE)
     })
   })
-
   
   
-
+  
+  
   observeEvent(input$gene,{
     
     #genes_selected <- gene_seeker_table |> dplyr::group_by(MGI_Symbol) |>  filter(MGI_Symbol %in% input$gene)
@@ -1568,7 +1504,7 @@ server <- function(input, output, session) {
     cols_core2$ID <- row.names(cols_core2)
     cols_core2 <- cols_core2[order(cols_core2$Condition,decreasing = TRUE),]
     
-
+    
     my_palette <- colorRampPalette(brewer.pal(3, "YlOrRd"))(256)
     output$geneseeker_plot <- renderPlotly({
       #heatmaply::heatmaply(x = normalize(core_mat_input |> dplyr::select(cols_core2$ID[order(cols_core2$Condition,decreasing = TRUE)])),                   
@@ -1594,21 +1530,12 @@ server <- function(input, output, session) {
                            grid_color = "white",
                            #custom_hovertext = labels_custom_hover,
                            grid_width = 0.21)#heatmap_layers = theme(axis.line=element_blank()))
-      })
     })
-  #my_palette<- rev(RdBu(9))
-  #my_palette_v <- rev(colorRampPalette(brewer.pal(3, "RdYlBu"))(99))
-  #my_palette_v <- display.brewer.pal(n = 12, name = 'RdYlBu')
-  #my_palette_v = wes_palette("Zissou1", 5)
-  my_palette_v <- rev(brewer.pal(n = 11, name = "RdYlBu"))
-  # center_around <- function(center=0) {
-  #   function(x, to=NA, from=NA) {
-  #     r <- max(abs(from-center))
-  #     (x - (center-r)) / 2/r
-  #   }
-  # }
+  })
   
-   
+  my_palette_v <- rev(brewer.pal(n = 11, name = "RdYlBu"))
+  
+  
   output$core_l2fc_hm <- renderPlotly({
     heatmaply::heatmaply(x= counts_148_selected_without_doubles |> dplyr::select(order(colnames(counts_148_selected_without_doubles))),
                          scale_fill_gradient_fun = scale_fill_gradientn(
@@ -1637,8 +1564,8 @@ server <- function(input, output, session) {
                          #   panel.background = element_blank()
                          # ),
                          main = "Core Regeneration Genes Heatmap of log2-Fold-Change values")
-    })
-
+  })
+  
   #Pubmed query results
   unj_fil <- read.delim(file = "./data/Uninjured_vs_Sham_mouse_enriched_fil_clean.txt",header = TRUE,sep = "\t")
   
@@ -1727,7 +1654,7 @@ server <- function(input, output, session) {
          height = 300)
   }, deleteFile = FALSE)
   
-
+  
   output$img7 <- renderImage({
     list(src = "www/logo_unibern@2x.png",
          contentType = 'image/jpeg',
@@ -1750,7 +1677,7 @@ server <- function(input, output, session) {
          alt = "This is alternate text",
          height = "25%")
   }, deleteFile = FALSE)
-
+  
   output$panos <- renderImage({
     list(src ="www/kopfPC.jpg",
          contentType = 'image/jpeg',
@@ -1793,7 +1720,7 @@ server <- function(input, output, session) {
          alt = "This is alternate text",
          height = "25%")
   }, deleteFile = FALSE)  
-
-
+  
+  
 }
 shinyApp(ui = ui, server = server)
