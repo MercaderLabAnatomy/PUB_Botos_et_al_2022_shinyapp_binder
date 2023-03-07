@@ -1,6 +1,7 @@
 install.package("sodium")
 install.package("shinyauthr")
 install.package("devtools")
+install.package("rlang")
 install.package("shinymanager")
 install.package("shiny")
 install.package("DT")
