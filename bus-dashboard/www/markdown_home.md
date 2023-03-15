@@ -33,6 +33,5 @@
 -   **5:** Followed by the PubMed query realized using the genes found in the Heart Core Regeneration.
 -   **6:** Followed by the Heatmap of the Core Regeneration genes in the three injury models and their respective up or down regulation when compared to sham.
 -   **7:** Followed by Gene Seeker, where minimum 2 genes shall be selected in order to see a Heatmap and a data table of expression among all samples, and the respective description of each gene.
--   **8:** Followed by the Authors mini information page, find the email of each under the profile picture.
 
 ### 
