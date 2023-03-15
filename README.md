@@ -12,6 +12,11 @@ Shiny app: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org
 
 * **Download data with the `raw` folder**
 * **Pre-process the data following the sequential steps:`multiqc` to `fastp` to optional rechech with `multiqc` to indexing the reference genome and prepare mapping with `STAR` within `indexing` to `mapping`**
-* **Processing of the data using `R`**
+* **Processing of the data using `R`; code can be found in folder `r_processing`**
 * **Pub Med query the genes of interest with `pubmed_query_processing`**
-* **Web Application follows and requires analysis with Cytoscape and further R integration `todo`**
+* **Web Application follows and requires analysis with Cytoscape and further R integration **\
+* **Shiny app code is in the folder `shiny_app` **\
+
+
+
+
