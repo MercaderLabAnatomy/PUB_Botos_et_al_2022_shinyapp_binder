@@ -1,6 +1,5 @@
 library("rlang")
 library("sodium")
-library("devtools")
 library("shinymanager")
 library("DT")
 library("dplyr")
@@ -8,7 +7,6 @@ library("fontawesome")
 library("shinydashboard")
 library("shinycssloaders")
 library("igraph")
-library("rmarkdown")
 library("markdown")
 library("ggplot2")
 library("visNetwork")
@@ -17,47 +15,10 @@ library("plotly")
 library("brew")
 library("RColorBrewer")
 library("curl")
-library("wesanderson")
-library("shinyauthr")
+
 
 rm(list=ls())
 gc()
-# options(repos = BiocManager::repositories())
-#.libPaths("/home/mbotos/R/x86_64-pc-linux-gnu-library/4.2/")
-
-
-inactivity <- "function idleTimer() {
-var t = setTimeout(logout, 120000);
-window.onmousemove = resetTimer; // catches mouse movements
-window.onmousedown = resetTimer; // catches mouse movements
-window.onclick = resetTimer;     // catches mouse clicks
-window.onscroll = resetTimer;    // catches scrolling
-window.onkeypress = resetTimer;  //catches keyboard actions
-
-function logout() {
-window.close();  //close the window
-}
-
-function resetTimer() {
-clearTimeout(t);
-t = setTimeout(logout, 120000);  // time is in milliseconds (1000 is 1 second)
-}
-}
-idleTimer();"
-
-
-# data.frame with credentials info
-credentials <- data.frame(
-  user = c("marius","nadia","panos","prateek", ""),
-  password = c("marius","nadia","panos","prateek", ""),
-  start = c("2022-04-01","2022-04-01","2022-04-01","2022-04-01", "2022-04-01"),
-  expire = c(NA,NA,NA,NA, NA),
-  admin = c(TRUE,FALSE,FALSE,TRUE, TRUE),
-  comment = "Simple and secure authentification mechanism
-  for single ‘Shiny’ applications.",
-  stringsAsFactors = FALSE
-)
-
 
 
 
@@ -68,10 +29,7 @@ credentials <- data.frame(
 #################################
 #     Ablated                   #
 #################################
-##:%s/^\(.*\)$/"\1",/
-#cat NN | tr "\n" " "
-#excel to paste and make the final command
-#setwd("/media/marius/Samsung_T5/PhD/Projects/prsa/Outputs/r/Cytoscape/Cleaned_Annotation_Ensembl_v4/ResultsCytoscape/PossibleShiny/RShinyCode/ShinnyNetworksGOBP")
+
 abl <- read_graph(file = "./data/cleaned_unique_go_bp_v2__Ablated_vs_Sham.graphml",format = "graphml")
 
 npp <- c("GO:1901293", "GO:0072522", "GO:0006163", "GO:0022900", "GO:0042775", "GO:0006123", "GO:1903715", "GO:0046040", "GO:0034033", "GO:0033866", "GO:0015986", "GO:0006085", "GO:0044272", "GO:0072521", "GO:0043467", "GO:0072350", "GO:0006188", "GO:0043648", "GO:0071616", "GO:0009205", "GO:0042773", "GO:0009201", "GO:0006084", "GO:0009142", "GO:0019646", "GO:0034032", "GO:0006753", "GO:0019693", "GO:0006790", "GO:0033865", "GO:0009145", "GO:0046390", "GO:0009127", "GO:0009199", "GO:0006164", "GO:0009152", "GO:0035383", "GO:0033875", "GO:0009060", "GO:0019359", "GO:0006637", "GO:0009260", "GO:0015980", "GO:0009124", "GO:1902600", "GO:0006167", "GO:0006099", "GO:0009144", "GO:0009259", "GO:0006107", "GO:0006086", "GO:0015985", "GO:0009165", "GO:0045333", "GO:0034030", "GO:0046034", "GO:0035384", "GO:0042776", "GO:0009156", "GO:0006120", "GO:0006754", "GO:0022904", "GO:0046033", "GO:0009206", "GO:0006090", "GO:0009117", "GO:0006119", "GO:0009141", "GO:0043457", "GO:0009168")
@@ -85,8 +43,7 @@ vsa <- c("GO:0045823", "GO:0035904", "GO:0097084", "GO:2001212", "GO:0060840", "
 dms <- c("GO:0072673", "GO:0050773", "GO:0022604", "GO:0010770", "GO:0008360", "GO:0060997", "GO:0050775", "GO:0048813", "GO:0048814", "GO:0016358", "GO:0060996", "GO:0010769")
 mpm <- c("GO:0097345", "GO:1905710", "GO:0006839", "GO:1902110", "GO:1902686", "GO:0090559", "GO:0035794", "GO:0008637", "GO:0007006", "GO:0046902", "GO:1902108", "GO:0010821")
 ota <- c("GO:0098656", "GO:0003333", "GO:0015816", "GO:0015804", "GO:0015807", "GO:1905039", "GO:0015711", "GO:0015849", "GO:0043090", "GO:0006865", "GO:0032328", "GO:1903825")
-#
-#vma <- vertex_attr(abl)$name[vertex_attr(abl)$`__glayCluster` == 1]
+
 vma <- c("GO:0072384", "GO:0008089", "GO:0051650", "GO:0008090", "GO:0047496", "GO:0008088", "GO:0098930", "GO:0051648", "GO:0010970", "GO:0006900", "GO:0099518")
 its <- c("GO:0050729", "GO:0031620", "GO:0044070", "GO:0031650", "GO:0002673", "GO:0002675", "GO:0001660", "GO:0002526", "GO:0009636", "GO:0031649")
 smm <- c("GO:0006582", "GO:0019748", "GO:0048021", "GO:0043455", "GO:0042438", "GO:1900376", "GO:0042440", "GO:0044550", "GO:0046148", "GO:0046189")
@@ -804,13 +761,7 @@ colnames(counts_148_selected_without_doubles) <- c("Resection","Ablation","Cryoi
 
 
 server <- function(input, output, session) {
-  
-  result_auth <- secure_server(check_credentials = check_credentials(credentials))
-  
-  output$res_auth <- renderPrint({
-    reactiveValuesToList(result_auth)
-    
-  })
+
   
   output$resected_net = renderVisNetwork({
     visNetwork::visIgraph(amp) |>
@@ -1236,7 +1187,7 @@ server <- function(input, output, session) {
   
   
   genes_core <-  "Select_a_node"
-  print(genes_core)
+  # print(genes_core)
   core_counts2 <- as.data.frame(core_counts[,c(rownames(s4c %>% filter(Condition %in% c("Sham","Cryoinjury","Ablated","Resection"))),"MGI_Symbol")])
   
   core_counts_genes <- core_counts2 %>% filter(MGI_Symbol %in% genes_core) %>% distinct(MGI_Symbol,.keep_all = TRUE)
@@ -1254,9 +1205,9 @@ server <- function(input, output, session) {
   # print(unique(cols_core$Condition))
   cols_core <- cols_core[order(cols_core$Condition,decreasing = TRUE),]
   # print(unique(cols_core$Condition))
-  print(head(core_mat))
-  print("test")
-  print(head(core_mat |> dplyr::select(cols_core$ID[order(cols_core$Condition,decreasing = TRUE)])))
+  # print(head(core_mat))
+  # print("test")
+  # print(head(core_mat |> dplyr::select(cols_core$ID[order(cols_core$Condition,decreasing = TRUE)])))
   
   if(nrow(core_mat)<=2){cluster=TRUE}else {cluster=FALSE}
   my_palette <- colorRampPalette(brewer.pal(3, "YlOrRd"))(256)
@@ -1375,8 +1326,7 @@ server <- function(input, output, session) {
                            key.title = "Expression by\nGene Values",
                            fontsize_col = 10,
                            grid_color = "white",
-                           #custom_hovertext = labels_custom_hover,
-                           grid_width = 0.21)#heatmap_layers = theme(axis.line=element_blank()))
+                           grid_width = 0.21)
     })
   })
   
@@ -1396,20 +1346,12 @@ server <- function(input, output, session) {
                          #plot_method = "plotly",
                          scale = "none",
                          key.title = "Expression by\nLog 2 Fold Change",
-                         #grid_color = "white",
-                         # fontsize_col = 12,
+
                          fontsize_row = 7,
                          subplot_widths=c(0.3, 0.2),
                          subplot_heights=c(1),
                          hclust_method = "mcquitty",
-                         # showlegened = TRUE,
-                         # theme(
-                         #   axis.line = element_line(color = "black"),
-                         #   panel.grid.major = element_blank(),
-                         #   panel.grid.minor = element_blank(),
-                         #   panel.border = element_blank(),
-                         #   panel.background = element_blank()
-                         # ),
+                        
                          main = "Core Regeneration Genes Heatmap of log2-Fold-Change values")
   })
   
@@ -1444,13 +1386,9 @@ server <- function(input, output, session) {
   
   output$known <- renderPlotly({
     heatmaply::heatmaply(x = pubmed_positive_f |> dplyr::select(pmp$ID[order(pmp$Condition,decreasing = TRUE)]),
-                         #colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
                          colors = my_palette,
                          col_side_colors = tibble::tibble("<b>Column Names</b>"= pmp$Condition),
-                         # scale_fill_gradient_fun = scale_fill_gradientn(
-                         #   colours = c("darkblue", "blue", "white", "yellow","orange","red","darkred"),
-                         #   limits = c(-5,15),
-                         #   values = scales::rescale(c(-5,-2,0,2,5,10,15))),
+                    
                          col_side_palette = c("Sham" = "#999999","Ablated"= "#E69F00","Resection" = "#CC6699","Cryoinjury" = "#0673B3"),
                          hide_colorbar = FALSE,
                          showticklabels = TRUE,
@@ -1469,7 +1407,6 @@ server <- function(input, output, session) {
   
   output$unknown <- renderPlotly({
     heatmaply::heatmaply(x = pubmed_negative_f |> dplyr::select(pmn$ID[order(pmn$Condition,decreasing = TRUE)]),
-                         # colors = rev(colorRampPalette(brewer.pal(3, "RdBu"))(99)),
                          colors = my_palette,
                          col_side_colors = tibble::tibble("<b>Column Names</b>" = pmn$Condition),
                          col_side_palette = c("Sham" = "#999999","Ablated"= "#E69F00","Resection" = "#CC6699","Cryoinjury" = "#0673B3"),
@@ -1480,7 +1417,6 @@ server <- function(input, output, session) {
                          plot_method = "plotly",
                          scale = "none",
                          subplot_widths=c(0.6, 0.3),
-                         # subplot_heights=c(0.1,0.03, 0.8),
                          subplot_heights=c(0.04,0.95),
                          key.title = "Expression by\nGene Values",
                          grid_color = "white",
@@ -1492,81 +1428,6 @@ server <- function(input, output, session) {
   
   
   
-  
-  output$marius <- renderImage({
-    list(src = "./www/kopfMB.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         width = 300,
-         height = 300)
-  }, deleteFile = FALSE)
-  
-  
-  output$img7 <- renderImage({
-    list(src = "www/logo_unibern@2x.png",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)
-  
-  
-  output$prateek <- renderImage({
-    list(src = "www/kopfPA.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         width = 300,
-         height = 300)
-  }, deleteFile = FALSE)
-  
-  output$pa1 <- renderImage({
-    list(src = "www/logo_unibern@2x.png",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)
-  
-  output$panos <- renderImage({
-    list(src ="www/kopfPC.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         width = 300,
-         height = 300)
-  }, deleteFile = FALSE)
-  
-  output$pc1 <- renderImage({
-    list(src = "www/logo_unibern@2x.png",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)
-  
-  output$pc2 <- renderImage({
-    list(src = "www/insel.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)
-  output$nadia <- renderImage({
-    list(src = "www/kopfNM.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         width = 300,
-         height = 300)
-  }, deleteFile = FALSE)
-  
-  output$nd1 <- renderImage({
-    list(src = "www/logo_unibern@2x.png",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)
-  
-  output$nd2 <- renderImage({
-    list(src = "www/cnic.jpg",
-         contentType = 'image/jpeg',
-         alt = "This is alternate text",
-         height = "25%")
-  }, deleteFile = FALSE)  
-  
+
   
 }
